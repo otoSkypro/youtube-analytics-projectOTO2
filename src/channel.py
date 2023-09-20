@@ -68,7 +68,3 @@ class Channel:
         with open(file_name, 'w', encoding='utf-8') as f:
             json.dump(output_data, f, ensure_ascii=False, indent=2)
 
-    def print_info(self) -> None:
-        """Выводит в консоль информацию о канале."""
-        result = self.get_service().channels().list(id=self._channel_id, part='snippet,statistics').execute()
-        print(json.dumps(result, indent=2, ensure_ascii=False))
