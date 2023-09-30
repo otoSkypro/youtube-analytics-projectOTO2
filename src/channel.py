@@ -13,7 +13,7 @@ class Channel:
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
-        pass
+
         self.channel_id = channel_id
         self._init_from_api()
 
@@ -89,9 +89,6 @@ class Channel:
             "video_count": self.video_count,
             "view_count": self.view_count
         }
-
-
-
         with open(filename, 'w', encoding='utf-8') as json_file:
             json.dump(data, json_file, ensure_ascii=False, indent=2)
 

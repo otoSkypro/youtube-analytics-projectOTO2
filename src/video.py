@@ -24,25 +24,22 @@ class Video:
     def _init_from_api(self) -> None:
         try:
             video_info = self.service.videos().list(id=self.video_id, part='snippet,statistics').execute()
-            items = video_info.get('items', [])
+            video_info = video_info['items'][0]
 
-            if items:
-                video_info = items[0]
+            self.id = video_info['id']
+            self.title = video_info['snippet']['title']
+            self.url = f'https://www.youtube.com/watch?v={self.id}'
+            self.view_count = video_info['statistics']['viewCount']
+            self.like_count = video_info['statistics']['likeCount']
 
-                self.id = video_info['id']
-                self.title = video_info['snippet']['title']
-                self.url = f'https://www.youtube.com/watch?v={self.id}'
-                self.view_count = video_info['statistics']['viewCount']
-                self.like_count = video_info['statistics']['likeCount']
-            else:
-                # Если в ответе нет элементов, устанавливаем атрибуты в None
-                self.id = None
-                self.title = None
-                self.url = None
-                self.view_count = None
-                self.like_count = None
-        except HttpError as e:
+        except (HttpError, IndexError) as e:
             print(f'Произошла ошибка при получении данных из YouTube API: {str(e)}')
+            # Устанавливаем все свойства, кроме video_id, в None
+            self.id = None
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
 
 
 class PLVideo(Video):
